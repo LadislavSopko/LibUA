@@ -19,6 +19,7 @@ namespace LibUA
 			public readonly Application App = null;
 			public readonly int MaximumMessageSize = 0;
 
+			protected string IpAddress;
 			protected int Port, Timeout, Backlog, MaxClients;
 			protected ILogger logger = null;
 
@@ -32,7 +33,7 @@ namespace LibUA
 			List<NetDispatcherBase> dispatchers = null;
 			object dispatchersLock = new object();
 
-			public Master(Application App, int Port, int Timeout, int Backlog, int MaxClients, ILogger logger, int MaximumMessageSize = 1 << 20)
+			public Master(Application App, string IpAddress, int Port, int Timeout, int Backlog, int MaxClients, ILogger logger, int MaximumMessageSize = 1 << 20)
 			{
 				this.App = App;
 				this.logger = logger;
@@ -42,7 +43,7 @@ namespace LibUA
 				this.Backlog = Backlog;
 				this.MaxClients = MaxClients;
 				this.MaximumMessageSize = MaximumMessageSize;
-
+				this.IpAddress = IpAddress;
 				dispatchers = new List<NetDispatcherBase>();
 			}
 
@@ -57,7 +58,7 @@ namespace LibUA
 				listenerAbort = new ManualResetEvent(false);
 				listenerAvailable = new Semaphore(MaxClients, MaxClients);
 
-				IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, Port);
+				IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(IpAddress), Port);
 
 				listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 				listener.Bind(localEndPoint);
