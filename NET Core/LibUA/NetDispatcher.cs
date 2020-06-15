@@ -2766,6 +2766,9 @@ namespace LibUA
 				succeeded &= respBuf.Encode((UInt32)NoofMethodsToCall);
 				for (uint i = 0; i < NoofMethodsToCall; i++)
 				{
+					app.MethodMap.TryGetValue(reqs[i].MethodId, out Application.MethodCallHandler mch);
+					mch?.Invoke(reqs[i]);
+
 					succeeded &= respBuf.Encode((UInt32)StatusCode.Good);
 					// InputArgumentResults: Array of StatusCode
 					succeeded &= respBuf.Encode((UInt32)0);
@@ -3390,6 +3393,7 @@ namespace LibUA
 
 				return (int)messageSize;
 			}
+
 		}
 	}
 }
