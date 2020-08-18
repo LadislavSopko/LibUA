@@ -68,6 +68,9 @@ namespace LibUA
 			ReaderWriterLockSlim monitorMapRW;
 			Dictionary<ServerMonitorKey, List<MonitoredItem>> monitorMap;
 
+			public delegate void MethodCallHandler(CallMethodRequest req);
+			public Dictionary<NodeId, MethodCallHandler> MethodMap;
+
 			public virtual X509Certificate2 ApplicationCertificate
 			{
 				get { return null; }
