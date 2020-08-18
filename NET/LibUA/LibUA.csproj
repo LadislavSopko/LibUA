@@ -47,13 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressSpace.cs" />
-    <Compile Include="Application.cs" />
-    <Compile Include="Client.cs" />
-    <Compile Include="Encoding.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="MemoryBufferExtensions.cs" />
-    <Compile Include="NetDispatcher.cs" />
     <Compile Include="Security.Cryptography\AesCng.cs" />
     <Compile Include="Security.Cryptography\AuthenticatedAes.cs" />
     <Compile Include="Security.Cryptography\AuthenticatedAesCng.cs" />
@@ -105,8 +98,7 @@
     <Compile Include="Security.Cryptography\Xml\XmlDsigNodeList.cs" />
     <Compile Include="Security.Cryptography\Xml\XmlDsigXPathWithNamespacesTransform.cs" />
     <Compile Include="Security.cs" />
-    <Compile Include="Server.cs" />
-    <Compile Include="Types.cs" />
   </ItemGroup>
+  <Import Project="..\..\NET Shared\LibUA\LibUA.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

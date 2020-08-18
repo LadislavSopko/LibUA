@@ -19,7 +19,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClient", "NET\TestClien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServer", "NET\TestServer\TestServer.csproj", "{A7EFF5B5-3A0B-4F41-88BC-289414D7FB03}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET Shared", "NET Shared", "{B76EB7C3-FEDB-4BB0-8EF0-058DDE6D8C62}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LibUA", "NET Shared\LibUA\LibUA.shproj", "{E0B2B9B8-58F8-4840-B6E7-65AD7AC15F3B}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		NET Shared\LibUA\LibUA.projitems*{84bc6739-52ac-482b-bf45-3d3ebd754d4b}*SharedItemsImports = 5
+		NET Shared\LibUA\LibUA.projitems*{a02727b5-ba44-4b42-a75f-b35e295dbaf0}*SharedItemsImports = 4
+		NET Shared\LibUA\LibUA.projitems*{e0b2b9b8-58f8-4840-b6e7-65ad7ac15f3b}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -60,6 +69,7 @@ Global
 		{A02727B5-BA44-4B42-A75F-B35E295DBAF0} = {B5D51E19-F3EC-4193-BADC-E7F1862D5FFF}
 		{EB70C239-B029-440F-8EC1-22AF288DAA63} = {B5D51E19-F3EC-4193-BADC-E7F1862D5FFF}
 		{A7EFF5B5-3A0B-4F41-88BC-289414D7FB03} = {B5D51E19-F3EC-4193-BADC-E7F1862D5FFF}
+		{E0B2B9B8-58F8-4840-B6E7-65AD7AC15F3B} = {B76EB7C3-FEDB-4BB0-8EF0-058DDE6D8C62}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03381D17-B1F1-48B8-9F30-97F101AEA4AD}

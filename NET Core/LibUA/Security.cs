@@ -43,7 +43,6 @@ namespace LibUA
 			}
 
 			throw new Exception();
-			return PaddingAlgorithm.None;
 		}
 
 		public static int SymmetricKeySizeForSecurityPolicy(SecurityPolicy policy, int clientNonceLength = -1)
@@ -56,7 +55,6 @@ namespace LibUA
 			}
 
 			throw new Exception();
-			return 0;
 		}
 
 
@@ -77,7 +75,6 @@ namespace LibUA
 			}
 
 			throw new Exception();
-			return 0;
 		}
 
 		public static RSAEncryptionPadding UseOaepForSecurityPolicy(SecurityPolicy policy)
@@ -191,7 +188,6 @@ namespace LibUA
 			}
 
 			throw new Exception();
-			return -1;
 		}
 
 		public static string ExportPEM(X509Certificate cert)
@@ -955,7 +951,6 @@ namespace LibUA
 			if (msgSize != respBuf.Position)
 			{
 				throw new Exception();
-				return StatusCode.BadInternalError;
 			}
 
 			if (securityMode >= MessageSecurityMode.SignAndEncrypt)

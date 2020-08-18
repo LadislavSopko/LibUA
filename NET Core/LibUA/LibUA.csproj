@@ -12,4 +12,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <Import Project="..\..\NET Shared\LibUA\LibUA.projitems" Label="Shared" />
+
 </Project>

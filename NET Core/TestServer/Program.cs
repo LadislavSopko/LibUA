@@ -496,7 +496,7 @@ namespace TestServer
 			sw.Start();
 
 			var app = new DemoApplication();
-			var server = new LibUA.Server.Master(app, 7718, 10, 30, 100, new DemoLogger());
+			var server = new LibUA.Server.Master(app, "127.0.0.1", 7718, 10, 30, 100, new DemoLogger());
 			server.Start();
 
 			sw.Stop();
