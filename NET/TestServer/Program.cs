@@ -79,7 +79,7 @@ namespace TestServer
 				(AddressSpaceTable[new NodeId(UAConst.OperationLimitsType_MaxMonitoredItemsPerCall)] as NodeVariable).Value = 100;
 
 				TrendNodes = new NodeVariable[1000];
-				var nodeTypeFloat = new NodeId(0, 10);
+				var nodeTypeFloat = new NodeId(UAConst.Float);
 				for (int i = 0; i < TrendNodes.Length; i++)
 				{
 					var id = string.Format("Trend {0}", (1 + i).ToString("D6"));
@@ -129,7 +129,6 @@ namespace TestServer
 				}
 
 				throw new Exception("Unhandled user identity token type");
-				return base.SessionValidateClientUser(session, userIdentityToken);
 			}
 
 			public override IList<EndpointDescription> GetEndpointDescriptions(string endpointUrlHint)
