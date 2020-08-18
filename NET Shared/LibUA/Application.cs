@@ -285,7 +285,8 @@ namespace LibUA
                         {
                             "http://opcfoundation.org/UA/",
                             "http://quantensystems.com/uaSDK2",
-                            "http://quantensystems.com/DemoServer"
+                            "http://quantensystems.com/DemoServer",
+                            "http://ogsm.treu.com/fenix"
                         }
                     },
                     { new NodeId(UAConst.Server_ServerStatus_State), (Int32)ServerState.Running }
@@ -632,7 +633,7 @@ namespace LibUA
                 // References, i=31, TypeGenerator.AddressSpaceGenerator+NodeReferenceType
                 //	HasSubtype/45 -> NonHierarchicalReferences/32
                 //	HasSubtype/45 -> HierarchicalReferences/33
-                var ID_i31_References = new NodeReferenceType(new NodeId(31), new QualifiedName("References"), new LocalizedText("References"), new LocalizedText("The abstract base type for all references."), 0, 0, true, false, new LocalizedText("References"));
+                var ID_i31_References = new NodeReferenceType(new NodeId(UAConst.References), new QualifiedName("References"), new LocalizedText("References"), new LocalizedText("The abstract base type for all references."), 0, 0, true, false, new LocalizedText("References"));
                 ID_i31_References.References.Add(new ReferenceNode(new NodeId(45), new NodeId(32), false));
                 ID_i31_References.References.Add(new ReferenceNode(new NodeId(45), new NodeId(33), false));
 
