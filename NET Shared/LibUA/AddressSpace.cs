@@ -314,7 +314,7 @@ namespace LibUA
 
 		public class NodeVariable : Node
 		{
-			public object Value
+			public virtual object Value
 			{
 				get; set;
 			}

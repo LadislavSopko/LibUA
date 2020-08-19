@@ -60,6 +60,8 @@ namespace LibUA
                 public EndPoint Endpoint;
             }
 
+            protected ILogger logger;
+
             protected ConcurrentDictionary<NodeId, Node> AddressSpaceTable;
 
             HashSet<NodeId> internalAddressSpaceNodes;
@@ -81,8 +83,10 @@ namespace LibUA
                 get { return null; }
             }
 
-            public Application()
+            public Application(ILogger l = null)
             {
+                logger = l;
+
                 MethodMap = new Dictionary<NodeId, MethodCallHandler>();
 
                 AddressSpaceTable = new ConcurrentDictionary<NodeId, Node>();
@@ -267,6 +271,12 @@ namespace LibUA
                 else if (AddressSpaceTable.TryGetValue(id, out Node node) && node is NodeVariable nv)
                 {
                     DataValue temp = (DataValue)nv.Value;
+
+                    if (logger != null)
+                    {
+                        logger.Log(LogLevel.Info, $"Value of node: {id} is {temp?.Value}");
+                    }
+
                     return new DataValue(temp?.Value, StatusCode.Good, DateTime.Now);
                 }
 
@@ -514,6 +524,12 @@ namespace LibUA
 
                     if (readValueIds[i].AttributeId == NodeAttribute.Value)
                     {
+
+                        if (logger != null)
+                        {
+                            logger.Log(LogLevel.Info, $"Get value req for node: {readValueIds[i].NodeId}");
+                        }
+
                         res[i] = HandleReadRequestInternal(readValueIds[i].NodeId);
                     }
                     else if (readValueIds[i].AttributeId == NodeAttribute.NodeId)
@@ -611,6 +627,13 @@ namespace LibUA
                     }
                     else
                     {
+                        /*
+                        if (logger != null)
+                        {
+                            logger.Log(LogLevel.Info, $"Wrong attrib id: {(NodeAttribute)readValueIds[i].AttributeId}");
+                        }
+                        */
+
                         res[i] = new DataValue(null, StatusCode.BadAttributeIdInvalid);
                     }
                 }
