@@ -11,27 +11,27 @@ using LibUA.Core;
 using LibUA.Security.Cryptography;
 using LibUA.Security.Cryptography.X509Certificates;
 using LibUA.Server;
+using Microsoft.Extensions.Logging;
 
 namespace TestServer
 {
+	static class AppLogger
+	{
+
+		public static ILoggerFactory LoggerFactory { get; }
+
+		static AppLogger()
+		{
+			LoggerFactory = new LoggerFactory();
+		}
+	}
+
+	
+
+
 	class Program
 	{
-		class DemoLogger : ILogger
-		{
-			public bool HasLevel(LogLevel Level)
-			{
-				return true;
-			}
-
-			public void LevelSet(LogLevel Mask)
-			{
-			}
-
-			public void Log(LogLevel Level, string Str)
-			{
-				Console.WriteLine("[{0}] {1}", Level.ToString(), Str);
-			}
-		}
+		private static  ILogger _logger = new Logger<Program>(AppLogger.LoggerFactory);
 
 		class DemoApplication : LibUA.Server.Application
 		{
@@ -467,7 +467,7 @@ namespace TestServer
 
 					appCertificate = cngKey.CreateSelfSignedCertificate(certParams);
 
-					var certPrivateCNG = new RSACng(appCertificate.GetCngPrivateKey());
+					var certPrivateCNG = new System.Security.Cryptography.RSACng(appCertificate.GetCngPrivateKey());
 					var certPrivateParams = certPrivateCNG.ExportParameters(true);
 
 					File.WriteAllText("ServerCert.der", UASecurity.ExportPEM(appCertificate));
@@ -491,7 +491,10 @@ namespace TestServer
 			sw.Start();
 
 			var app = new DemoApplication();
-			var server = new LibUA.Server.Master(app, "127.0.0.1", 7719, 10, 30, 100, new DemoLogger());
+			var server = new LibUA.Server.Master(app, "127.0.0.1", 7719, 10, 30, 100, _logger);
+
+			_logger.LogInformation("Started!");
+
 			server.Start();
 
 			sw.Stop();

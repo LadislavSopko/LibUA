@@ -13,7 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Application.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Client.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ILogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MemoryBufferExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NetDispatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server.cs" />

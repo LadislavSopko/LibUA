@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using LibUA.Core;
+using Microsoft.Extensions.Logging;
 
 namespace LibUA
 {
@@ -705,7 +706,7 @@ namespace LibUA
 
 				if (logger != null)
 				{
-					logger.Log(LogLevel.Info, string.Format("{0}: Message type {1} with SL state {2}", LoggerID(), typeId.ToString(), config.SLState.ToString()));
+					logger.Log(LogLevel.Information, string.Format("{0}: Message type {1} with SL state {2}", LoggerID(), typeId.ToString(), config.SLState.ToString()));
 				}
 
 				if (typeId.NamespaceIndex == 0)
@@ -722,7 +723,7 @@ namespace LibUA
 							case (uint)RequestCode.CloseSessionRequest:
 								if (logger != null)
 								{
-									logger.Log(LogLevel.Info, string.Format("{0}: Client sent CloseSessionRequest", LoggerID()));
+									logger.Log(LogLevel.Information, string.Format("{0}: Client sent CloseSessionRequest", LoggerID()));
 								}
 								return ErrorClosed;
 
@@ -753,7 +754,7 @@ namespace LibUA
 							case (uint)RequestCode.CloseSecureChannelRequest:
 								if (logger != null)
 								{
-									logger.Log(LogLevel.Info, string.Format("{0}: Client sent CloseSecureChannelRequest", LoggerID()));
+									logger.Log(LogLevel.Information, string.Format("{0}: Client sent CloseSecureChannelRequest", LoggerID()));
 								}
 								return ErrorClosed;
 						}
@@ -770,14 +771,14 @@ namespace LibUA
 							case (uint)RequestCode.CloseSessionRequest:
 								if (logger != null)
 								{
-									logger.Log(LogLevel.Info, string.Format("{0}: Client sent CloseSessionRequest", LoggerID()));
+									logger.Log(LogLevel.Information, string.Format("{0}: Client sent CloseSessionRequest", LoggerID()));
 								}
 								return ErrorClosed;
 
 							case (uint)RequestCode.CloseSecureChannelRequest:
 								if (logger != null)
 								{
-									logger.Log(LogLevel.Info, string.Format("{0}: Client sent CloseSecureChannelRequest", LoggerID()));
+									logger.Log(LogLevel.Information, string.Format("{0}: Client sent CloseSecureChannelRequest", LoggerID()));
 								}
 								return ErrorClosed;
 
@@ -1572,7 +1573,7 @@ namespace LibUA
 
 					if (logger != null)
 					{
-						logger.Log(LogLevel.Info, string.Format("{0}: SL security token {1} issued for channel {2} with security policy {3}", LoggerID(), config.TokenID, config.ChannelID, config.SecurityPolicy.ToString()));
+						logger.Log(LogLevel.Information, string.Format("{0}: SL security token {1} issued for channel {2} with security policy {3}", LoggerID(), config.TokenID, config.ChannelID, config.SecurityPolicy.ToString()));
 					}
 				}
 				else if (securityTokenRequestType == (uint)SecurityTokenRequestType.Renew)
@@ -1596,7 +1597,7 @@ namespace LibUA
 
 					if (logger != null)
 					{
-						logger.Log(LogLevel.Info, string.Format("{0}: SL security token {1} renewed for channel {2} with security policy {3}, previous token was {4}", LoggerID(), config.TokenID, config.ChannelID, config.SecurityPolicy.ToString(), config.PrevTokenID.ToString()));
+						logger.Log(LogLevel.Information, string.Format("{0}: SL security token {1} renewed for channel {2} with security policy {3}, previous token was {4}", LoggerID(), config.TokenID, config.ChannelID, config.SecurityPolicy.ToString(), config.PrevTokenID.ToString()));
 					}
 
 					foreach (var sub in subscriptionMap.Values)

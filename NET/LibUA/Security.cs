@@ -396,7 +396,7 @@ namespace LibUA
 
 		public static RSAParameters ImportRSAPrivateKey(string buf)
 		{
-			var rsa = new RSACng();
+			var rsa = new System.Security.Cryptography.RSACng();
 			var parameters = rsa.ExportParameters(false);
 
 			var b64line = string.Join(string.Empty, buf
@@ -483,7 +483,7 @@ namespace LibUA
 
 		public static RSAParameters ImportRSAPublicKey(string buf)
 		{
-			var rsa = new RSACng();
+			var rsa = new System.Security.Cryptography.RSACng();
 			var parameters = rsa.ExportParameters(false);
 
 			var b64line = string.Join(string.Empty, buf

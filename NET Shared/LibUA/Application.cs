@@ -9,12 +9,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using LibUA.Core;
+using Microsoft.Extensions.Logging;
 
 namespace LibUA
 {
     namespace Server
     {
-        public class Application
+        public abstract class Application
         {
             protected struct ServerMonitorKey : IEquatable<ServerMonitorKey>
             {
@@ -60,7 +61,7 @@ namespace LibUA
                 public EndPoint Endpoint;
             }
 
-            protected ILogger logger;
+            protected ILogger _logger; // this will come form outside
 
             protected ConcurrentDictionary<NodeId, Node> AddressSpaceTable;
 
@@ -83,9 +84,9 @@ namespace LibUA
                 get { return null; }
             }
 
-            public Application(ILogger l = null)
+            protected Application(ILogger l = null)
             {
-                logger = l;
+                _logger = l;
 
                 MethodMap = new Dictionary<NodeId, MethodCallHandler>();
 
@@ -272,9 +273,9 @@ namespace LibUA
                 {
                     DataValue temp = (DataValue)nv.Value;
 
-                    if (logger != null)
+                    if (_logger != null && _logger.IsEnabled(LogLevel.Trace))
                     {
-                        logger.Log(LogLevel.Info, $"Value of node: {id} is {temp?.Value}");
+                        _logger.LogTrace($"Value of node: {id} is {temp?.Value}");
                     }
 
                     return new DataValue(temp?.Value, StatusCode.Good, DateTime.Now);
@@ -295,8 +296,8 @@ namespace LibUA
                         {
                             "http://opcfoundation.org/UA/",
                             "http://quantensystems.com/uaSDK2",
-                            "http://quantensystems.com/DemoServer",
-                            "http://ogsm.treu.com/fenix"
+                            "http://quantensystems.com/NotUsed",
+                            "http://3uvision.com/fenix"
                         }
                     },
                     { new NodeId(UAConst.Server_ServerStatus_State), (Int32)ServerState.Running }
@@ -525,9 +526,9 @@ namespace LibUA
                     if (readValueIds[i].AttributeId == NodeAttribute.Value)
                     {
 
-                        if (logger != null)
+                        if (_logger != null && _logger.IsEnabled(LogLevel.Trace))
                         {
-                            logger.Log(LogLevel.Info, $"Get value req for node: {readValueIds[i].NodeId}");
+                            _logger.LogTrace($"Get value req for node: {readValueIds[i].NodeId}");
                         }
 
                         res[i] = HandleReadRequestInternal(readValueIds[i].NodeId);

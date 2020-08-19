@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using LibUA.Core;
+using Microsoft.Extensions.Logging;
 
 namespace LibUA
 {
@@ -344,7 +345,7 @@ namespace LibUA
 					Endpoint = socket.RemoteEndPoint
 				};
 
-				if (logger != null) { logger.Log(LogLevel.Info, string.Format("Accepted connection from {0}", sessionInfo.Endpoint)); }
+				if (logger != null) { logger.Log(LogLevel.Information, string.Format("Accepted connection from {0}", sessionInfo.Endpoint)); }
 
 				config = new SLChannel();
 				config.Endpoint = socket.RemoteEndPoint as IPEndPoint;
@@ -519,7 +520,7 @@ namespace LibUA
 				//	app.MonitorDispatcherRemove(cfg);
 				//}
 
-				if (logger != null) { logger.Log(LogLevel.Info, string.Format("Ended connection from {0}", sessionInfo.Endpoint)); }
+				if (logger != null) { logger.Log(LogLevel.Information, string.Format("Ended connection from {0}", sessionInfo.Endpoint)); }
 			}
 
 			virtual protected bool NeedsPulse()
