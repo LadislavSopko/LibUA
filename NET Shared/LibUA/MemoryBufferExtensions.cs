@@ -1561,22 +1561,28 @@ namespace LibUA
 		public static bool Decode(this MemoryBuffer mem, out Argument ad)
 		{
 			ad = null;
-			string Locale = string.Empty, Text = string.Empty;
 
-			byte mask;
-			if (!mem.Decode(out mask)) { return false; }
+			string name = string.Empty;
+			if (!mem.DecodeUAString(out name)) { return false; }
 
-			if ((mask & 1) != 0)
+			NodeId dataType = null;
+			if (!mem.Decode(out dataType)) { return false; }
+
+			int valueRank = 0;
+			if (!mem.Decode(out valueRank)) { return false; }
+
+			int arrayDimensionsSize = 0;
+			if (!mem.Decode(out arrayDimensionsSize)) { return false; }
+
+			int[] arrayDimensions = new int[arrayDimensionsSize];
+			for (int i = 0; i < arrayDimensionsSize; ++i)
 			{
-				if (!mem.DecodeUAString(out Locale)) { return false; }
+				if (!mem.Decode(out arrayDimensions[i])) { return false; }
 			}
+			LocalizedText description;
+			if (!mem.Decode(out description)) { return false; }
 
-			if ((mask & 2) != 0)
-			{
-				if (!mem.DecodeUAString(out Text)) { return false; }
-			}
-
-			ad = new LocalizedText(Locale, Text);
+			ad = new Argument(name, dataType, valueRank, arrayDimensionsSize, arrayDimensions, description);
 
 			return true;
 		}
@@ -1596,8 +1602,14 @@ namespace LibUA
 		public static bool Encode(this MemoryBuffer mem, Argument ad)
 		{
 			if (!mem.EncodeUAString(ad.Name)) { return false; }
-			if (!string.IsNullOrEmpty(ad.Text) && !mem.EncodeUAString(ad.Text)) { return false; }
-
+			if (!mem.Encode(ad.DataType)) { return false; }
+			if (!mem.Encode(ad.ValueRank)) { return false; }
+			if (!mem.Encode(ad.ArrayDimensionsSize)) { return false; }
+			for(int i = 0; i < ad.ArrayDimensionsSize; ++i)
+            {
+				if (!mem.Encode(ad.ArrayDimensions[i])) { return false; }
+			}
+			if (!mem.Encode(ad.Description)) { return false; }
 			return true;
 		}
 	}

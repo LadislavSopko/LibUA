@@ -696,7 +696,7 @@ namespace LibUA
 				if (type == typeof(LocalizedText)) { return VariantType.LocalizedText; }
 				if (type == typeof(DateTime)) { return VariantType.DateTime; }
 				if (type == typeof(StatusCode)) { return VariantType.StatusCode; }
-				if (type == typeof(Argument)) { return VariantType.ExtensionObject; }
+				// if (type == typeof(Argument)) { return VariantType.ExtensionObject; }
 
 				// TODO: Other types
 
@@ -840,15 +840,27 @@ namespace LibUA
 					var arr = (Array)obj;
 					for (int i = 0; i < arr.Length; i++)
 					{
-						if(varType == VariantType.ExtensionObject)
-                        {
+						//if(varType == VariantType.ExtensionObject)
+						//                  {
+						//	var eo = WrapInExtensionObject(arr.GetValue(i));
+						//	if (eo == null)
+						//	{
+						//		return false;
+						//	}
 
-                        } else
-                        {
-							if (!VariantEncode(arr.GetValue(i), mask))
-							{
-								return false;
-							}
+						//	if (!this.Encode(eo)) { return false; }
+
+						//} else
+						//                  {
+						//	if (!VariantEncode(arr.GetValue(i), mask))
+						//	{
+						//		return false;
+						//	}
+						//}
+
+						if (!VariantEncode(arr.GetValue(i), mask))
+						{
+							return false;
 						}
 					}
 				}
@@ -856,18 +868,30 @@ namespace LibUA
 				{
 					if (!Encode(mask)) { return false; }
 
-					if (varType == VariantType.ExtensionObject)
+					//if (varType == VariantType.ExtensionObject)
+					//{
+					//	var eo = WrapInExtensionObject(obj);
+					//	if(eo == null)
+					//                   {
+					//		return false;
+					//                   }
+
+					//	if(!this.Encode(eo)) { return false; }
+
+					//}
+					//else
+					//{
+					//	if (!VariantEncode(obj, mask))
+					//	{
+					//		return false;
+					//	}
+					//}
+
+					if (!VariantEncode(obj, mask))
 					{
-						var
+						return false;
 					}
-					else
-					{
-						if (!VariantEncode(obj, mask))
-						{
-							return false;
-						}
-					}
-					
+
 				}
 
 				return true;
@@ -875,7 +899,25 @@ namespace LibUA
 
 			private ExtensionObject WrapInExtensionObject(object obj)
             {
+				if(obj is Argument ar)
+                {
+					MemoryBuffer mb = new MemoryBuffer();
 
+					int size = mb.CodingSize(ar);
+
+					if (!mb.EnsureAvailable(size, false)) { return null; }
+					if (!mb.Encode(ar)) { return null; }
+					ExtensionObject ret = new ExtensionObject();
+					ret.Body = new byte[size];
+					Array.Copy(mb.Buffer, ret.Body, size);
+					ret.TypeId = new NodeId(UAConst.Argument);
+
+					return ret;
+
+				} else
+                {
+					return null; // not handled
+                }
             }
 
 			private int VariantCodingSize(object obj, byte mask)
