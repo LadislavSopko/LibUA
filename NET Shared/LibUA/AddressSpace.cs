@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace LibUA
 {
@@ -423,11 +424,54 @@ namespace LibUA
 				get; protected set;
 			}
 
-			public NodeMethod(NodeId Id, QualifiedName BrowseName, LocalizedText DisplayName, LocalizedText Description, UInt32 WriteMask, UInt32 UserWriteMask, bool IsExecutable, bool IsUserExecutable)
+			public Func<object[], object> FunctionCall { get; protected set; }
+			
+			public NodeMethod(NodeId Id, QualifiedName BrowseName, LocalizedText DisplayName, LocalizedText Description, UInt32 WriteMask, UInt32 UserWriteMask, bool IsExecutable, bool IsUserExecutable, Func<object[], object> Call = default)
 				: base(Id, NodeClass.Object, BrowseName, DisplayName, Description, WriteMask, UserWriteMask)
 			{
 				this.IsExecutable = IsExecutable;
 				this.IsUserExecutable = IsUserExecutable;
+				this.FunctionCall = Call;
+			}
+		}
+
+		public class Argument
+        {
+            public Argument(string name, NodeId dataType, int valueRank, int arrayDimensionsSize, int[] arrayDimensions, LocalizedText description)
+            {
+                Name = name;
+                DataType = dataType;
+                ValueRank = valueRank;
+                ArrayDimensionsSize = arrayDimensionsSize;
+                ArrayDimensions = arrayDimensions;
+                Description = description;
+            }
+
+            public string Name { get; set; }
+
+			public NodeId DataType
+			{
+				get; protected set;
+			}
+
+			public int ValueRank
+			{
+				get; protected set;
+			} = (int)Core.ValueRank.Scalar; 
+
+			public int ArrayDimensionsSize
+			{
+				get; protected set;
+			} = 0;
+
+			public int[] ArrayDimensions
+			{
+				get; protected set;
+			}
+
+			public LocalizedText Description
+			{
+				get; protected set;
 			}
 		}
 

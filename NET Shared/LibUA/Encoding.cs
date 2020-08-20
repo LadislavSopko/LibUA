@@ -696,10 +696,11 @@ namespace LibUA
 				if (type == typeof(LocalizedText)) { return VariantType.LocalizedText; }
 				if (type == typeof(DateTime)) { return VariantType.DateTime; }
 				if (type == typeof(StatusCode)) { return VariantType.StatusCode; }
+				if (type == typeof(Argument)) { return VariantType.ExtensionObject; }
 
 				// TODO: Other types
 
-				return VariantType.Null;
+				return VariantType.Variant;
 			}
 
 
@@ -839,23 +840,43 @@ namespace LibUA
 					var arr = (Array)obj;
 					for (int i = 0; i < arr.Length; i++)
 					{
-						if (!VariantEncode(arr.GetValue(i), mask))
-						{
-							return false;
+						if(varType == VariantType.ExtensionObject)
+                        {
+
+                        } else
+                        {
+							if (!VariantEncode(arr.GetValue(i), mask))
+							{
+								return false;
+							}
 						}
 					}
 				}
 				else
 				{
 					if (!Encode(mask)) { return false; }
-					if (!VariantEncode(obj, mask))
+
+					if (varType == VariantType.ExtensionObject)
 					{
-						return false;
+						var
 					}
+					else
+					{
+						if (!VariantEncode(obj, mask))
+						{
+							return false;
+						}
+					}
+					
 				}
 
 				return true;
 			}
+
+			private ExtensionObject WrapInExtensionObject(object obj)
+            {
+
+            }
 
 			private int VariantCodingSize(object obj, byte mask)
 			{
@@ -887,7 +908,7 @@ namespace LibUA
 					case (int)VariantType.LocalizedText: size += this.CodingSize((LocalizedText)obj); break;
 					case (int)VariantType.ExtensionObject: size += this.CodingSize((ExtensionObject)obj); break;
 					//case (int)VariantType.DataValue: size += CodingSize((int)obj); break;
-					//case (int)VariantType.Variant: size += CodingSize((int)obj); break;
+					// case (int)VariantType.Variant: size += CodingSize((int)obj); break;
 					//case (int)VariantType.DiagnosticInfo: size += CodingSize((int)obj); break;
 					default:
 						throw new Exception("TODO");
@@ -966,9 +987,9 @@ namespace LibUA
 					case (int)VariantType.QualifiedName: return this.Encode((QualifiedName)obj);
 					case (int)VariantType.LocalizedText: return this.Encode((LocalizedText)obj);
 					case (int)VariantType.ExtensionObject: return this.Encode((ExtensionObject)obj);
-					//case (int)VariantType.DataValue: return Encode((int)obj);
-					//case (int)VariantType.Variant: return Encode((int)obj);
-					//case (int)VariantType.DiagnosticInfo: return Encode((int)obj);
+					// case (int)VariantType.DataValue: return Encode((int)obj);
+					// case (int)VariantType.Variant: return VariantEncode(obj);
+					// case (int)VariantType.DiagnosticInfo: return Encode((int)obj);
 					default:
 						throw new Exception("TODO");
 				}

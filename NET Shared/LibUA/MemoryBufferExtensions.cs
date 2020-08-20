@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -790,6 +791,11 @@ namespace LibUA
 
 		public static bool Encode(this MemoryBuffer mem, DataValue dv)
 		{
+			if(dv.Value != null)
+            {
+				Trace.WriteLine(dv.Value.GetType().Name);
+			}
+
 			if (!mem.Encode(dv.GetEncodingMask())) { return false; }
 			if (dv.Value != null)
 			{
@@ -1548,6 +1554,50 @@ namespace LibUA
 			mem.Position += (int)Length;
 
 			str = Encoding.ASCII.GetString(arr);
+			return true;
+		}
+
+
+		public static bool Decode(this MemoryBuffer mem, out Argument ad)
+		{
+			ad = null;
+			string Locale = string.Empty, Text = string.Empty;
+
+			byte mask;
+			if (!mem.Decode(out mask)) { return false; }
+
+			if ((mask & 1) != 0)
+			{
+				if (!mem.DecodeUAString(out Locale)) { return false; }
+			}
+
+			if ((mask & 2) != 0)
+			{
+				if (!mem.DecodeUAString(out Text)) { return false; }
+			}
+
+			ad = new LocalizedText(Locale, Text);
+
+			return true;
+		}
+
+		public static int CodingSize(this MemoryBuffer mem, Argument ad)
+		{
+			int size = mem.CodingSize((byte)0);
+			size += mem.CodingSizeUAString(ad.Name);
+			size += mem.CodingSize(ad.DataType);
+			size += mem.CodingSize(ad.ValueRank);
+			size += mem.CodingSize(ad.ArrayDimensionsSize);
+			size += ad.ArrayDimensionsSize * mem.CodingSize((int)0);
+			size += mem.CodingSize(ad.Description);
+			return size;
+		}
+
+		public static bool Encode(this MemoryBuffer mem, Argument ad)
+		{
+			if (!mem.EncodeUAString(ad.Name)) { return false; }
+			if (!string.IsNullOrEmpty(ad.Text) && !mem.EncodeUAString(ad.Text)) { return false; }
+
 			return true;
 		}
 	}
